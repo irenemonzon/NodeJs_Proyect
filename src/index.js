@@ -1,16 +1,24 @@
-//core Module, tambien se usa el fs
+const express = require('express');
 
-let http = require("http");
-//localmodule
+const { info, error } = require('./modules/mylog');
+const { countries } = require('countries-list');
 
-//let log = require("./modules/mylog");
-let { info, error } = require("./modules/mylog");
-let url = require("url");
-let querystring = require("querystring");
+const app = express();
 
-let { countries } = require("countries-list");
+app.get('/', function(request, response) {
+  response.status(200).send('Hello');
+});
 
-let server = http.createServer(function(request, response) {
+app.get('/info', function(request, response) {
+  info('hola info');
+  response.send('info nodemon');
+});
+
+app.get('*', function(request, response) {
+  response.status(404).send('NOT FOUND');
+});
+
+/*let server = http.createServer(function(request, response) {
   let parsed = url.parse(request.url);
   console.log("parsed:", parsed);
 
@@ -45,6 +53,8 @@ let server = http.createServer(function(request, response) {
     response.write("<html><body><p>Not Found</p></body></html");
     response.end();
   }
+});*/
+
+app.listen(4000, function() {
+  console.log('runnig on 4000');
 });
-server.listen(4000);
-console.log("runnig on 4000");
